@@ -1,7 +1,14 @@
 
 from nba_api.stats.endpoints import playergamelog
 import pandas as pd
+
 class Logger:
+
+    def create_file(self):
+        pass
+    #TODO make a function that returns self.dateframe to a newfile that is appended by
+    #1 or a certain value  each time it is called to ensure a new file is made. This is not a top priorty 
+    #Complete whenever.
 
     def __init__(self, id: int):
         self.id = id
@@ -80,7 +87,15 @@ class Logger:
     def show_away_games(self, awayGames: pd.DataFrame):
         print(awayGames)
         return awayGames
+    
+
+     #TODO make a function that returns self.dateframe to a newfile that is appended by
+    #1 or a certain value  each time it is called to ensure a new file is made. This is not a top priorty 
+    #Complete whenever.
         
+    def create_file(self):
+            pass
+   
 
 
        
