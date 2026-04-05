@@ -25,7 +25,7 @@ class Logger:
         return log.head(15)
     
 
-    def get_last_15_games(self):
+    def get_last_15_games(self) -> pd.DataFrame:
 
         df = self.log_games()
 
