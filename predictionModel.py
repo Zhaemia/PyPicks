@@ -13,10 +13,9 @@ class PredictionModel:
         Check how many times self.cat (e.g. PTS) was greater than self.statLine
         Return the percentage
             '''
-            count = self.gamelogs[self.cat].gt(self.statLine).sum()
-            rows = len(self.gamelogs)
-            total = count / rows
-            percentage = int(round(total * 100))
+            get_total_games_fromDF = self.gamelogs[self.cat].gt(self.statLine).sum() / len(self.gamelogs)
+          
+            percentage = int(round(get_total_games_fromDF * 100))
             print(f" Hit percentage: {percentage}%")
 
             if percentage >= 65:

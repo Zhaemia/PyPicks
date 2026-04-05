@@ -1,7 +1,20 @@
 from nba_api.stats.static import players
 import statGrabber
-class Player:      
+class Player:
+
+    def search_players(self, name):
+          #Get Nba player
+        player = players.find_players_by_full_name(name)
+        return player
+
+        #Check if that player exsist return -1 for now if not.
+        if not player:
+            print("Player not found")
+            return -1
+
+             
     def get_player(self, name):
+
         
         #Get Nba player
         player = players.find_players_by_full_name(name)
@@ -30,7 +43,8 @@ class Player:
                 break
         
         id = player[selection - 1]['id']
-        return id
+        player_name = player[selection - 1]['full_name']
+        return id, player_name
         
         
             
