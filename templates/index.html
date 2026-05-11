@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pypicks</title>
+</head>
+<body>
+    <input
+        type = "search"
+        id="player_Search"
+        required
+        >
+
+     <button
+        type="submit"
+        id="player_search_Button"
+         >
+        Submit
+    </button>
+    <ul id="player_list" >
+'
+    </ul>
+    <script>
+        const button_click = document.getElementById("player_search_Button");
+        button_click.addEventListener("click", function(){
+            
+            const player = document.getElementById("player_Search");
+            const selection = player.value;
+            fetch(`/player/${selection}`)
+                .then(response => {
+                    return response.json()
+                })
+                .then(data => {
+                    ul = document.querySelector("#player_list")
+                    li = document.createElement('li')
+                    li.appendChild(data)
+                    
+
+                    
+                })
+                .catch(error =>{
+                    console.log("Error")
+                })
+        })
+    </script>
+</body>
+</html>

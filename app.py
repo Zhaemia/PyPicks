@@ -1,36 +1,33 @@
-import streamlit as st
+from flask import Flask, jsonify
 import players
+import logger
+import predictionModel
+from flask import render_template
+app = Flask(__name__)
 
-if 'count' not in st.session_state:
-    st.session_state['count'] = 0
+@app.route('/')
+def index():
+   return render_template('/index.html')
 
+@app.route('/player/<search_player>')
+def getPlayer(search_player):
+    player = players.Player()
+    player = player.search_players(search_player)
+    return jsonify(player)
 
-st.title("PyPicks")
-st.text_input(
-        label = "Enter a player", 
-        key = "nba_player")
+    
+    
+@app.route('/logs/<Player>')
+def showPlayerStats(Player):
+    log = logger.Logger(Player)
+    df = log.get_last_15_games()
+    json_df = df.to_json(orient='records')
+    return jsonify(json_df)
 
-if st.button(
-        label = "Search", 
-        key = "nba_player_button"):
-
-    if st.session_state['nba_player']:
-
-        player = players.Player()
-        results = player.search_players(st.session_state['nba_player'])
-        st.session_state['player_search'] = results
-
-if 'player_search' in st.session_state:
-
-    st.selectbox(
-                 label = "results", 
-                 options = st.session_state['player_search'], 
-                 key = 'nba_player_list',
-                 format_func = lambda x: x['full_name']
-                 )
-
-if st.button(
-            label = "Select player",
-            key = "nba_players_list_button"):
-    pass
+@app.route('/prediction/<id>/<cat>/<statLine>')
+def getPrediction(id, cat, statLine):
+    logs = logger.Logger(id)
+    copyLogs = logs.get_last_15_games()
+    p = predictionModel.PredictionModel(copyLogs, cat, statLine)
+    return p.hitRate()
     

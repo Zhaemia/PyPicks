@@ -3,6 +3,10 @@ from nba_api.stats.endpoints import playergamelog
 import pandas as pd
 
 class Logger:
+    def __init__(self, id: int):
+
+        self.id: int = id
+        
 
     def create_file(self):
         pass
@@ -10,9 +14,7 @@ class Logger:
     #1 or a certain value  each time it is called to ensure a new file is made. This is not a top priorty 
     #Complete whenever.
 
-    def __init__(self, id: int):
-        self.id = id
-        
+
 
     
     def log_games(self):

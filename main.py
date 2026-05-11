@@ -6,8 +6,8 @@ import pandas as pd
 def main():
 
     
-    new_player = players.Player()
-    player = input("Please enter a name: ")
+    new_player: str = players.Player()
+    player: str = input("Please enter a name: ")
     print("\n")
     id, players_name = new_player.get_player(player)
     print(f"\nPlayer selected: {players_name}\n")
@@ -59,5 +59,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    for i in range(20):
+
+        main()
 
