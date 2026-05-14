@@ -11,7 +11,6 @@
         id="player_Search"
         required
         >
-
      <button
         type="submit"
         id="player_search_Button"
@@ -19,25 +18,82 @@
         Submit
     </button>
     <ul id="player_list" >
-'
     </ul>
+    <div id="player_data">
+    </div>
+    <p id="predictionChance"></p>
     <script>
         const button_click = document.getElementById("player_search_Button");
         button_click.addEventListener("click", function(){
-            
             const player = document.getElementById("player_Search");
             const selection = player.value;
             fetch(`/player/${selection}`)
                 .then(response => {
-                    return response.json()
+                    return response.json();
                 })
                 .then(data => {
-                    ul = document.querySelector("#player_list")
-                    li = document.createElement('li')
-                    li.appendChild(data)
-                    
+                    var ul = document.querySelector("#player_list");
+                    ul.innerHTML = "";
+                    data.forEach(element => { 
+                        var li = document.createElement('li');
+                        li.textContent = element['full_name'];
+                        li.addEventListener('click',   () => {
 
-                    
+                            fetch(`/logs/${element['id']}`)
+                                .then(response => {
+                                    return response.json()
+                                })
+                                .then(data => {
+                                    console.log(JSON.stringify(data[0]))
+                                    const body = document.getElementById("player_data").textContent = JSON.stringify(data, null, 4);
+                                    return data
+                                })
+                                .then(statLogs =>{
+                                   const statSearchCat = document.createElement('input')
+                                   statSearchCat.id= 'statSearchCat';
+                                   statSearchCat.placeholder= "Select a stat cat"
+                                   const line = document.createElement('input')
+                                   line.id ='line';
+                                   line.placeholder= "Select a line"
+                                  
+                                   
+                                   const sButton = document.createElement('button')
+                                   sButton.type= 'button';
+                                   sButton.id= 'sButton';
+                                   sButton.textContent = "Submit"
+                                   document.body.appendChild(statSearchCat);
+                                   document.body.appendChild(line);
+                                   document.body.appendChild(sButton);
+                                   const sButtonClick = sButton.addEventListener('click', function(){
+                                   console.log("button clicked")
+
+                                   const selectedStatCat = document.getElementById('statSearchCat').value;
+                                   const selectedLine = document.getElementById('line').value;
+
+                                   fetch(`/prediction/${element['id']}/${selectedStatCat}/${selectedLine}`)
+                                        .then(response => {
+                                            return response.text()
+                                        })
+                                        .then(data =>{
+                                            console.log(data)
+                                            p = document.getElementById('predictionChance')
+                                            p.textContent = data;
+                                            console.log(p.textContent);
+                                    
+                                                      })
+                                        .catch(error => {
+                                            console.log("Error dectected")
+                                        })
+                                   
+
+                                   })
+                                })
+                                .catch( error => {
+                                    console.log('bad data')
+                                })
+                        })
+                        ul.appendChild(li)          
+                    });     
                 })
                 .catch(error =>{
                     console.log("Error")

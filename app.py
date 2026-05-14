@@ -21,13 +21,12 @@ def getPlayer(search_player):
 def showPlayerStats(Player):
     log = logger.Logger(Player)
     df = log.get_last_15_games()
-    json_df = df.to_json(orient='records')
-    return jsonify(json_df)
+    return df.to_json(orient='records')
 
 @app.route('/prediction/<id>/<cat>/<statLine>')
-def getPrediction(id, cat, statLine):
+def getPrediction(id: int, cat: str, statLine: int):
     logs = logger.Logger(id)
     copyLogs = logs.get_last_15_games()
-    p = predictionModel.PredictionModel(copyLogs, cat, statLine)
+    p = predictionModel.PredictionModel(copyLogs, cat.upper(), int(statLine))
     return p.hitRate()
     
