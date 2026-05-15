@@ -16,7 +16,6 @@ def getPlayer(search_player):
     return jsonify(player)
 
     
-    
 @app.route('/logs/<Player>')
 def showPlayerStats(Player):
     log = logger.Logger(Player)
@@ -27,6 +26,6 @@ def showPlayerStats(Player):
 def getPrediction(id: int, cat: str, statLine: int):
     logs = logger.Logger(id)
     copyLogs = logs.get_last_15_games()
-    p = predictionModel.PredictionModel(copyLogs, cat.upper(), int(statLine))
+    p = predictionModel.PredictionModel(copyLogs, cat.upper(), float(statLine))
     return p.hitRate()
     

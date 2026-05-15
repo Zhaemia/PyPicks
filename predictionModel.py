@@ -1,6 +1,6 @@
 import pandas as pd
 class PredictionModel:
-    def __init__(self, gamelogs: pd.DataFrame, cat: str, statLine: int):
+    def __init__(self, gamelogs: pd.DataFrame, cat: str, statLine: float):
         self.gamelogs = gamelogs
         self.cat = cat
         self.statLine = statLine

@@ -41,16 +41,91 @@
 
                             fetch(`/logs/${element['id']}`)
                                 .then(response => {
-                                    return response.json()
+                                    return response.json();
                                 })
                                 .then(data => {
-                                    console.log(JSON.stringify(data[0]))
-                                    const body = document.getElementById("player_data").textContent = JSON.stringify(data, null, 4);
+                                    console.log(JSON.stringify(data[0]));
+                                    const table = document.createElement('table');
+                                    const keys = Object.keys(data);
+                                    const tableCatHeaders = document.createElement('th');
+                                    const tableCatRows = document.createElement('tr');
+
+                                    const th1 = document.createElement('th');
+                                    th1.textContent = 'Matchup';
+                                    tableCatRows.appendChild(th1);
+
+                                    const th2 = document.createElement('th');
+                                    th2.textContent = 'Points';
+                                    tableCatRows.appendChild(th2);
+                                    
+                                     const th3 = document.createElement('th');
+                                    th3.textContent = 'Rebounds';
+                                    tableCatRows.appendChild(th3);
+
+                                     const th4 = document.createElement('th');
+                                    th4.textContent = 'Assist';
+                                    tableCatRows.appendChild(th4);
+
+                                     const th5 = document.createElement('th');
+                                    th5.textContent = 'PRA';
+                                    tableCatRows.appendChild(th5);
+
+                                     const th6= document.createElement('th');
+                                    th6.textContent = 'PA';
+                                    tableCatRows.appendChild(th6);
+
+                                     const th7 = document.createElement('th');
+                                    th7.textContent = 'RA';
+                                    tableCatRows.appendChild(th7);
+
+                                    document.body.append(tableCatRows);
+
+                                    data.forEach(element =>{
+
+                                        const tableRow = document.createElement('tr');
+                                        const td = document.createElement('td');
+                                        
+
+                                        const matchup = document.createElement('td');
+                                        matchup.textContent = element['MATCHUP'];
+                                        tableRow.appendChild(matchup);
+
+                                        const pts = document.createElement('td');
+                                        pts.textContent = element['PTS'];
+                                        tableRow.appendChild(pts);
+
+                                        const reb = document.createElement('td');
+                                        reb.textContent = element['REB'];
+                                        tableRow.appendChild(reb);
+
+
+                                        const ast = document.createElement('td');
+                                        ast.textContent = element['AST'];
+                                        tableRow.appendChild(ast);
+
+                                        const pra = document.createElement('td');
+                                        pra.textContent = element['PRA'];
+                                        tableRow.appendChild(pra);
+
+                                        const pa = document.createElement('td');
+                                        pa.textContent = element['PA'];
+                                        tableRow.appendChild(pa);
+
+
+                                        const ra = document.createElement('td');
+                                        ra.textContent = element['RA'];
+                                        tableRow.appendChild(ra);
+
+                                        table.appendChild(tableRow);
+                                    })
+                                    document.body.appendChild(table);
+
                                     return data
                                 })
                                 .then(statLogs =>{
                                    const statSearchCat = document.createElement('input')
                                    statSearchCat.id= 'statSearchCat';
+
                                    statSearchCat.placeholder= "Select a stat cat"
                                    const line = document.createElement('input')
                                    line.id ='line';
@@ -61,44 +136,47 @@
                                    sButton.type= 'button';
                                    sButton.id= 'sButton';
                                    sButton.textContent = "Submit"
+
                                    document.body.appendChild(statSearchCat);
+
                                    document.body.appendChild(line);
+
                                    document.body.appendChild(sButton);
+
                                    const sButtonClick = sButton.addEventListener('click', function(){
-                                   console.log("button clicked")
+                                        console.log("button clicked")
+                                        const selectedStatCat = document.getElementById('statSearchCat').value;
+                                        const selectedLine = document.getElementById('line').value;
 
-                                   const selectedStatCat = document.getElementById('statSearchCat').value;
-                                   const selectedLine = document.getElementById('line').value;
+                                        fetch(`/prediction/${element['id']}/${selectedStatCat}/${selectedLine}`)
+                                            .then(response => {
+                                                return response.text()
+                                            })
 
-                                   fetch(`/prediction/${element['id']}/${selectedStatCat}/${selectedLine}`)
-                                        .then(response => {
-                                            return response.text()
-                                        })
-                                        .then(data =>{
-                                            console.log(data)
-                                            p = document.getElementById('predictionChance')
-                                            p.textContent = data;
-                                            console.log(p.textContent);
+                                            .then(data =>{
+                                                console.log(data)
+                                                p = document.getElementById('predictionChance')
+                                                p.textContent = data;
+                                                console.log(p.textContent);
                                     
-                                                      })
-                                        .catch(error => {
-                                            console.log("Error dectected")
-                                        })
-                                   
+                                            })
 
-                                   })
+                                            .catch(error => {
+                                                console.log("Error dectected")
+                                        });
+                                   });
                                 })
                                 .catch( error => {
                                     console.log('bad data')
-                                })
-                        })
+                                });
+                        });
                         ul.appendChild(li)          
-                    });     
+                    });   
                 })
                 .catch(error =>{
                     console.log("Error")
-                })
-        })
+                });
+        });
     </script>
 </body>
 </html>
